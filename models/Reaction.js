@@ -29,7 +29,8 @@ const reaction_schema = new Schema
     },
     { timestamps: true },
     {
-        toJSON: { virtuals: true }
+        toJSON: { virtuals: true },
+        id: false
     }
 );
 

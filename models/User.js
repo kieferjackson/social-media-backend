@@ -1,5 +1,4 @@
 const { Schema, model } = require('mongoose');
-const thought_schema = require('./Thought.js');
 
 const user_schema = new Schema
 (
@@ -18,11 +17,18 @@ const user_schema = new Schema
             required: true,
             match: /.+\@.+\..+/
         },
-        thoughts: [thought_schema],
+        thoughts: 
+        [
+            {
+                type: Schema.Types.ObjectId,
+                ref: 'Thought'  
+            }
+        ],
         friends: [this]
     },
     {
-        toJSON: { virtuals: true }
+        toJSON: { virtuals: true },
+        id: false
     }
 );
 

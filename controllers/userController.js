@@ -1,12 +1,15 @@
-const User = require('../models/User');
-const Thought = require('../models/Thought');
+const { User, Thought } = require('../models');
 
 module.exports = 
 {
     getUsers(req, res) 
-    { User.find()
+    { 
+        User.find()
         .then( (users) => res.json(users))
-        .catch( (error) => res.status(500).json(error));
+        .catch( (error) => { 
+            console.log(error);
+            res.status(500).json(error);
+        });
     },
     
     getSingleUser(req, res)
@@ -16,14 +19,20 @@ module.exports =
         .then( (user) => !user 
             ? res.status(404).json({ message: `No user with ID: ${req.params.userId}`}) 
             : res.json(user)
-        ).catch( (error) => res.status(500).json(error));
+        ).catch( (error) => { 
+            console.log(error);
+            res.status(500).json(error);
+        });
     },
 
     createUser(req, res)
     {
         User.create(req.body)
             .then( (new_userdata) => res.json(new_userdata))
-            .catch( (error) => res.status(500).json(error));
+            .catch( (error) => { 
+                console.log(error);
+                res.status(500).json(error);
+            });
     },
     
     updateUser(req, res)
@@ -36,7 +45,10 @@ module.exports =
         ).then( (user) => !user
             ? res.status(404).json({ message: `No user with ID: ${req.params.userId}`}) 
             : res.json(user)
-        ).catch( (error) => res.status(500).json(error));
+        ).catch( (error) => { 
+            console.log(error);
+            res.status(500).json(error);
+        });
     },
 
     deleteUser(req, res)
@@ -45,7 +57,10 @@ module.exports =
         .then( (user) => !user
             ? res.status(404).json({ message: `No user with ID: ${req.params.userId}`}) 
             : res.status(200).json({ message: `User was successfully deleted` })
-        ).catch( (error) => res.status(500).json(error));
+        ).catch( (error) => { 
+            console.log(error);
+            res.status(500).json(error);
+        });
     },
 
     addFriend(req, res)
@@ -58,7 +73,10 @@ module.exports =
         ).then( (user) => !user
             ? res.status(404).json({ message: `No user with ID: ${req.params.userId}`}) 
             : res.status(200).json(user)
-        ).catch( (error) => res.status(500).json(error));
+        ).catch( (error) => { 
+            console.log(error);
+            res.status(500).json(error);
+        });
     },
 
     removeFriend(req, res)
@@ -71,6 +89,9 @@ module.exports =
         ).then( (user) => !user
             ? res.status(404).json({ message: `No user with ID: ${req.params.userId}`}) 
             : res.status(200).json(user)
-        ).catch( (error) => res.status(500).json(error));
+        ).catch( (error) => { 
+            console.log(error);
+            res.status(500).json(error);
+        });
     }
 }

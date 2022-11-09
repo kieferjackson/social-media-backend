@@ -36,7 +36,9 @@ function format_timestamp(timestamp)
     return timestamp.toLocaleDateString();
 }
 
-thought_schema.virtual('reactionCount').get(() => this.reactions.length);
+thought_schema.virtual('reactionCount').get(function () {
+    return this.reactions.length;
+});
 
 const Thought = model('thought', thought_schema);
 

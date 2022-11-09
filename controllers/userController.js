@@ -5,6 +5,7 @@ module.exports =
     getUsers(req, res) 
     { 
         User.find()
+        .select('-__v')
         .then( (users) => res.json(users))
         .catch( (error) => { 
             console.log(error);
@@ -63,12 +64,22 @@ module.exports =
         });
     },
 
-    addFriend(req, res)
+    async addFriend(req, res)
     {
+        // Find friend by given id
+        const friend_to_add = await User.findById(req.params.friendId)
+        .catch( (error) => { 
+            console.log(error);
+            res.status(500).json(error);
+        });
+
+        // Check that requested user exists
+        if (!friend_to_add) { res.status(404).json({ message: `No user with ID: ${req.params.friendId} exists in the database.` }) }
+
         User.findOneAndUpdate
         (
             { _id: req.params.userId },
-            { $addToSet: { friends: req.body } },
+            { $addToSet: { friends: friend_to_add } },
             { runValidators: true, new: true }
         ).then( (user) => !user
             ? res.status(404).json({ message: `No user with ID: ${req.params.userId}`}) 
@@ -79,12 +90,22 @@ module.exports =
         });
     },
 
-    removeFriend(req, res)
+    async removeFriend(req, res)
     {
+        // Find friend by given id
+        const friend_to_remove = await User.findById(req.params.friendId)
+        .catch( (error) => { 
+            console.log(error);
+            res.status(500).json(error);
+        });
+
+        // Check that requested user exists
+        if (!friend_to_remove) { res.status(404).json({ message: `No user with ID: ${req.params.friendId} exists in the database.` }) }
+
         User.findOneAndUpdate
         (
-            { _id: req.params.videoId },
-            { $pull: { friends: { responseId: req.params.friendId } } },
+            { _id: req.params.userId },
+            { $pull: { friends: { _id: req.params.friendId } } },
             { runValidators: true, new: true }
         ).then( (user) => !user
             ? res.status(404).json({ message: `No user with ID: ${req.params.userId}`}) 

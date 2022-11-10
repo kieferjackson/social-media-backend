@@ -1,4 +1,4 @@
-const { User, Thought } = require('../models');
+const { User } = require('../models');
 
 module.exports = 
 {
@@ -105,7 +105,7 @@ module.exports =
         User.findOneAndUpdate
         (
             { _id: req.params.userId },
-            { $pull: { friends: { _id: req.params.friendId } } },
+            { $pull: { friends: req.params.friendId } },
             { runValidators: true, new: true }
         ).then( (user) => !user
             ? res.status(404).json({ message: `No user with ID: ${req.params.userId}`}) 

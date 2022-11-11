@@ -1,4 +1,4 @@
-const { Schema, model, Types } = require('mongoose');
+const { Schema, Types } = require('mongoose');
 
 const reaction_schema = new Schema
 (
@@ -27,8 +27,8 @@ const reaction_schema = new Schema
             required: true
         }
     },
-    { timestamps: true },
     {
+        timestamps: true,
         toJSON: { virtuals: true },
         id: false
     }
@@ -36,9 +36,7 @@ const reaction_schema = new Schema
 
 function format_timestamp(timestamp)
 {
-    return timestamp.toLocaleDateString();
+    return new Date(timestamp).toLocaleDateString();
 }
 
-const Reaction = model('reaction', reaction_schema)
-
-module.exports = Reaction;
+module.exports = reaction_schema;

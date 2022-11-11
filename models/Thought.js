@@ -1,4 +1,5 @@
 const { Schema, model } = require('mongoose');
+const reaction_schema = require('./Reaction');
 
 const thought_schema = new Schema
 (
@@ -21,16 +22,10 @@ const thought_schema = new Schema
             type: String,
             required: true
         },
-        reactions: 
-        [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Reaction'  
-            }
-        ]
+        reactions: [reaction_schema]
     },
-    { timestamps: true },
     {
+        timestamps: true,
         toJSON: { virtuals: true },
         id: false
     }
@@ -38,7 +33,7 @@ const thought_schema = new Schema
 
 function format_timestamp(timestamp)
 {
-    return timestamp.toLocaleDateString();
+    return new Date(timestamp).toLocaleDateString();
 }
 
 thought_schema.virtual('reactionCount').get(function () {

@@ -1,4 +1,4 @@
-const { Thought, Reaction } = require('../models');
+const { Thought, User } = require('../models');
 
 module.exports = 
 {
@@ -29,8 +29,17 @@ module.exports =
     createThought(req, res)
     {
         Thought.create(req.body)
-            .then( (new_thoughtdata) => res.json(new_thoughtdata))
-            .catch( (error) => { 
+            .then( (new_thoughtdata) => {
+                return User.findOneAndUpdate
+                (
+                    { username: req.body.username },
+                    { $push: { thoughts: new_thoughtdata._id } },
+                    { new: true }
+                );
+            }).then( (user) => !user 
+                ? res.status(404).json({ message: `No user with username: ${req.params.username}`}) 
+                : res.json(user)
+            ).catch( (error) => { 
                 console.log(error);
                 res.status(500).json(error);
             });
@@ -66,16 +75,12 @@ module.exports =
 
     addReaction(req, res)
     {
-        Reaction.create(req.body)
-        .then( (reaction) => {
-            console.log(reaction);
-            return Thought.findOneAndUpdate
-            (
-                { _id: req.body.thoughtId },
-                { $push: { reactions: reaction.reactionId } },
-                { new: true }
-            );
-        }).then( (thought) => {
+        Thought.findOneAndUpdate
+        (
+            { _id: req.params.thoughtId },
+            { $push: { reactions: req.body } },
+            { new: true }
+        ).then( (thought) => {
             !thought
                 ? res.status(404).json({ message: `No thought with ID: ${req.params.thoughtId}`, thought })
                 : res.status(200).json({ message: 'Reaction was successfully added' })

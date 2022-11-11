@@ -13,12 +13,12 @@ connection.once('open', async () =>
     await Thought.deleteMany({});
 
     // Add seed data to User/Thought collections
-    await User.collection.insertMany(users);
-    await Thought.collection.insertMany(thoughts);
+    // await User.collection.insertMany(users);
+    // // await Thought.collection.insertMany(thoughts);
 
-    console.table(users);
-    console.table(thoughts);
+    // console.table(users);
+    // console.table(thoughts);
 
-    console.log('Seeding complete.');
+    console.log('Database was successfully cleared.');
     process.exit(0);
 })

@@ -1,5 +1,7 @@
 # Social Media Backend
 
+[Video demonstration of the API in action](https://drive.google.com/file/d/1Dp_nHVbQhyoehyS1pZS4GqZwIuKPsgY0/view)
+
 ## Description
 MongoDB database for storing user data. No frontend is included for this project, and so a walkthrough video has been provided to demonstrate the application's functionality:
 
